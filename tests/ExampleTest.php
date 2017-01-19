@@ -16,4 +16,6 @@ class ExampleTest extends TestCase
         $this->visit('/')
              ->see('Laravel');
     }
+//     include base_path('/database/migrations/2000_01_01_000000_create_elasticsearch.php');
+//     (new \CreateElasticsearch())->up();
 }
