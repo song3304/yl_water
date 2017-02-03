@@ -2,6 +2,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Addons\Core\Models\CacheTrait;
 use Addons\Core\Models\CallTrait;
 use Addons\Core\Models\PolyfillTrait;
@@ -12,21 +13,25 @@ use Addons\Entrust\Traits\UserTrait;
 
 use App\Role;
 use App\CatalogCastTrait;
-use Laravel\Scout\Searchable;
+use App\Logable;
+use Addons\Elasticsearch\Scout\Searchable;
+
 class User extends Authenticatable
 {
 	use HasApiTokens, SoftDeletes, Notifiable, UserTrait;
 	use CacheTrait, CallTrait, PolyfillTrait;
 	use CatalogCastTrait;
-	use Searchable;
-	protected $dates = ['lastlogin_at'];
+	use Searchable, Logable;
 
 	//不能批量赋值
 	protected $guarded = ['id'];
 	protected $hidden = ['password', 'remember_token', 'deleted_at'];
+	protected $dates = ['lastlogin_at'];
+	protected $touches = ['roles'];
 	protected $casts = [
 		'gender' => 'catalog',
 	];
+
 
 	public static function add($data, $role_name = NULL)
 	{
@@ -37,14 +42,38 @@ class User extends Authenticatable
 		return $user;
 	}
 
-	public function creator()
+
+	/*public function xxx_catalogs()
 	{
-		return $this->hasOne('App\\User', 'id', 'creator_uid');
+		$catalog = Catalog::getCatalogsByName('fields.xxx_catalog');
+		return $this->belongsToMany('App\Catalog', 'user_multiples', 'uid', 'cid')->withPivot(['parent_cid', 'extra'])->wherePivot('parent_cid', $catalog['id'])->withTimestamps();
+	}*/
+
+	public function extra()
+	{
+		return $this->hasOne('App\UserExtra', 'id', 'id');
 	}
 
 	public function finance()
 	{
 		return $this->hasOne('App\\UserFinance', 'id', 'id');
+	}
+
+	public function scopeOfRole(Builder $builder, $roleIdOrName)
+	{
+		$role = Role::findByCache($roleIdOrName);
+		empty($role) && $role = Role::findByName($roleIdOrName);
+
+		$builder->join('role_user', 'role_user.user_id', '=', 'users.id', 'LEFT');
+
+		$builder->whereIn('role_user.role_id', $role->getDescendant()->merge([$role])->modelKeys());
+	}
+
+	public function scope_all(Builder $builder, $keywords)
+	{
+		if (empty($keywords)) return;
+		$users = static::search()->where(['username', 'nickname', 'realname', 'phone', 'email'], $keywords)->take(2000)->keys();
+		return $builder->whereIn($this->getKeyName(), $users);
 	}
 }
 

@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    public $commands = [
-	//
+    protected $commands = [
+        //
     ];
 
     /**

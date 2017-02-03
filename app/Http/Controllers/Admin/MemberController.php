@@ -12,7 +12,7 @@ use DB;
 class MemberController extends Controller
 {
 	use ApiTrait;
-	public $RESTful_permission = 'member';
+	public $permissions = ['member'];
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -25,46 +25,32 @@ class MemberController extends Controller
 		//view's variant
 		$this->_size = $size;
 		$this->_filters = $this->_getFilters($request);
+		$this->_queries = $this->_getQueries($request);
 		return $this->view('admin.member.list');
 	}
 
 	public function data(Request $request)
 	{
 		$user = new User;
-		$builder = $user->newQuery()->with([ 'roles']);
-		if ($roleId = $request->input('filters.role_id')){
-			$request->merge(['filters' => ['role_id' => NULL]]);
-			$role = Role::findByCache($roleId);
-			if (!empty($roleId))
-				$builder->join('role_user', 'role_user.user_id', '=', 'users.id', 'LEFT')->whereIn('role_user.role_id', $role->getDescendant()->merge([$role])->pluck('id'));
-		} 
+		$builder = $user->newQuery()->with(['roles']);
+
 		$total = $this->_getCount($request, $builder, FALSE);
 		$data = $this->_getData($request, $builder, null, ['users.*']);
-		$data['recordsTotal'] = $total;
-		$data['recordsFiltered'] = $data['total'];
+		$data['recordsTotal'] = $total; //不带 f q 条件的总数
+		$data['recordsFiltered'] = $data['total']; //带 f q 条件的总数
 		return $this->api($data);
 	}
 
 	public function export(Request $request)
 	{
 		$user = new User;
-		$builder = $user->newQuery()->with(['roles'])->join('role_user', 'role_user.user_id', '=', 'users.id', 'LEFT');
-		$page = $request->input('page') ?: 0;
+		$builder = $user->newQuery()->with(['roles']);
 		$size = $request->input('size') ?: config('size.export', 1000);
-		$total = $this->_getCount($request, $builder);
-
-		if (empty($page)){
-			$this->_of = $request->input('of');
-			$this->_table = $user->getTable();
-			$this->_total = $total;
-			$this->_size = $size > $total ? $total : $size;
-			return $this->view('admin.member.export');
-		}
 
 		$data = $this->_getExport($request, $builder, function(&$v){
 			$v['gender'] = !empty($v['gender']) ? $v['gender']['title'] : NULL;
 		}, ['users.*']);
-		return $this->api($data);
+		return $this->export($data);
 	}
 
 	public function show(Request $request, $id)
@@ -79,7 +65,7 @@ class MemberController extends Controller
 
 	public function create()
 	{
-		$keys = 'username,password,nickname,realname,gender,email,phone,idcard,avatar_aid,role_ids';
+		$keys = ['username', 'password', 'nickname', 'realname', 'gender', 'email', 'phone', 'idcard', 'avatar_aid', 'role_ids'];
 		$this->_data = [];
 		$this->_validates = $this->getScriptValidate('member.store', $keys);
 		return $this->view('admin.member.create');
@@ -87,12 +73,24 @@ class MemberController extends Controller
 
 	public function store(Request $request)
 	{
-		$keys = 'username,password,nickname,realname,gender,email,phone,idcard,avatar_aid,role_ids';
+		$keys = ['username', 'password', 'nickname', 'realname', 'gender', 'email', 'phone', 'idcard', 'avatar_aid', 'role_ids'];
 		$data = $this->autoValidate($request, 'member.store', $keys);
 
+		$extraKeys = [];
+		$multipleKeys = [];
+		$extra = array_only($data, $extraKeys);
+		$multiples = array_only($data, $multipleKeys);
+
 		$role_ids = array_pull($data, 'role_ids');
-		DB::transaction(function() use ($data, $role_ids){
+		$data = array_except($data, array_merge($extraKeys, $multipleKeys));
+		DB::transaction(function() use ($data, $extra, $multiples, $role_ids){
 			$user = (new User)->add($data);
+			$user->extra()->create($extra);
+			foreach((array)$multiples as $k => $v)
+			{
+				$catalog = Catalog::getCatalogsByName('fields.'.Str::singular($k));
+				$game->$k()->attach($v, ['parent_cid' => $catalog['id']]);
+			}
 			$user->roles()->sync($role_ids);
 		});
 		return $this->success('', url('admin/member'));
@@ -104,7 +102,7 @@ class MemberController extends Controller
 		if (empty($user))
 			return $this->failure_noexists();
 
-		$keys = 'username,nickname,realname,gender,email,phone,idcard,avatar_aid,role_ids';
+		$keys = ['username', 'nickname', 'realname', 'gender', 'email', 'phone', 'idcard', 'avatar_aid', 'role_ids'];
 		$this->_validates = $this->getScriptValidate('member.store', $keys);
 		$this->_data = $user;
 		return $this->view('admin.member.edit');
@@ -123,11 +121,25 @@ class MemberController extends Controller
 			$data['password'] = bcrypt($data['password']);
 			$user->update($data);
 		}
-		$keys = 'nickname,realname,gender,email,phone,idcard,avatar_aid,role_ids';
+		$keys = ['nickname', 'realname', 'gender', 'email', 'phone', 'idcard', 'avatar_aid', 'role_ids'];
 		$data = $this->autoValidate($request, 'member.store', $keys, $user);
+
+		$extraKeys = [];
+		$multipleKeys = [];
+		$extra = array_only($data, $extraKeys);
+		$multiples = array_only($data, $multipleKeys);
+
 		$role_ids = array_pull($data, 'role_ids');
-		DB::transaction(function() use ($user, $data, $role_ids){
+		$data = array_except($data, array_merge($extraKeys, $multipleKeys));
+		DB::transaction(function() use ($user, $extra, $multiples, $data, $role_ids){
 			$user->update($data);
+			$user->extra()->update($extra);
+			foreach((array)$multiples as $k => $v)
+			{
+				$catalog = Catalog::getCatalogsByName('fields.'.Str::singular($k));
+				$game->$k()->detach();
+				$game->$k()->attach($v, ['parent_cid' => $catalog['id']]);
+			}
 			$user->roles()->sync($role_ids);
 		});
 		return $this->success();

@@ -3,14 +3,18 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Support\Str;
+use Addons\Core\Http\OutputResponse;
+use Doctrine\DBAL\Driver\PDOException;
+use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
+use Addons\Entrust\Exception\PermissionException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Session\TokenMismatchException;
-use Illuminate\Database\QueryException;
-use Doctrine\DBAL\Driver\PDOException;
-use App\Http\Controllers\Controller;
+
 class Handler extends ExceptionHandler
 {
 	/**
@@ -25,6 +29,7 @@ class Handler extends ExceptionHandler
 		\Illuminate\Database\Eloquent\ModelNotFoundException::class,
 		\Illuminate\Session\TokenMismatchException::class,
 		\Illuminate\Validation\ValidationException::class,
+		\Addons\Entrust\Exception\PermissionException::class,
 	];
 
 	/**
@@ -54,22 +59,45 @@ class Handler extends ExceptionHandler
 			// 当findOrFail等情况下出现的报错
 			if($exception instanceof ModelNotFoundException)
 			{
-				$file = str_replace(base_path(), '', $traces[$key]['file']);
-				$line = $traces[$key]['line'];
-				//$exception = new NotFoundHttpException($exception->getMessage(), $exception);
-				return (new Controller())->failure('document.failure_model_noexist', FALSE, ['model' => $exception->getModel(), 'file' => $file ,'line' => $line]);
+				$traces = $exception->getTrace();
+				foreach($traces as $key => $value)
+				{
+					if ($value['function'] == '__callStatic' && Str::endsWith($value['args'][0], 'OrFail'))
+					{
+						$file = str_replace([base_path(), PLUGINSPATH], '', $value['file']);
+						$line = $value['line'];
+						return (new OutputResponse)->setRequest($request)->setResult('failure')->setMessage('document.failure_model_noexist', ['model' => $exception->getModel(), 'file' => $file , 'line' => $line, 'id' => implode(',', $exception->getIds())]);
+					}
+				}
 			}
+			else if($exception instanceof PermissionException)
+				return (new OutputResponse)->setRequest($request)->setResult('failure')->setMessage('auth.failure_permission');
 			else if ($exception instanceof TokenMismatchException)
-				return (new Controller())->failure('validation.failure_csrf');
+				return (new OutputResponse)->setRequest($request)->setResult('failure')->setMessage('validation.failure_csrf');
 			else if (($exception instanceof QueryException) || ($exception instanceof PDOException))
-				return (new Controller())->error('server.error_database');
-			else
-				return (new Controller())->error('server.error_server');
+				return (new OutputResponse)->setRequest($request)->setResult('error')->setMessage('server.error_database');
 			// other 500 errors
 		}
 
 		return parent::render($request, $exception);
 	}
+
+	/**
+     * Prepare response containing exception render.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function prepareResponse($request, Exception $e)
+    {
+        if ($this->isHttpException($e)) {
+            return $request->expectsJson() ? (new OutputResponse)->setRequest($request)->setResult('error')->setRawMessage($e->getMessage())->setStatusCode($e->getStatusCode()) : $this->toIlluminateResponse($this->renderHttpException($e), $e);
+        } else {
+            return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
+        }
+    }
+
 	/**
 	 * Convert an authentication exception into an unauthenticated response.
 	 *
@@ -80,7 +108,8 @@ class Handler extends ExceptionHandler
 	protected function unauthenticated($request, AuthenticationException $exception)
 	{
 		if ($request->expectsJson()) {
-			return (new Controller())->failure('auth.failure_unlogin');//response()->json(['error' => 'Unauthenticated.'], 401);
+			return (new OutputResponse)->setRequest($request)->setResult('failure')->setMessage('auth.failure_unlogin');
+			//response()->json(['error' => 'Unauthenticated.'], 401);
 		}
 
 		return redirect()->guest('auth');

@@ -1,0 +1,1 @@
+<title><{config('settings.title')}><{foreach config('settings.subtitles') as $v}> - <{$v.title}><{/foreach}></title>

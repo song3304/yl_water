@@ -1,6 +1,5 @@
 <!-- Form Content -->
 <form action="<{'admin'|url nofilter}>/<{block "name"}><{/block}>/" method="GET" class="form-bordered form-horizontal">
-	<input type="hidden" name="base" value="<{$_base}>">
 	<div class="form-group col-sm-4">
 		<label class="col-md-3 control-label" for="username">用户名</label>
 		<div class="col-md-9">
@@ -34,7 +33,7 @@
 	<div class="form-group col-sm-4">
 		<label class="col-md-3 control-label" for="role_id">用户组</label>
 		<div class="col-md-9">
-			<select type="text" id="role_id" name="f[role_id]" class="form-control tree-model" data-model="admin/role" data-text="{{display_name}}({{name}})" data-placeholder="请输入关键词..." value="<{$_filters.role_id.eq}>"></select>
+			<select type="text" id="role_id" name="q[ofRole]" class="form-control tree-model" data-model="admin/role" data-text="{{display_name}}({{name}})" data-placeholder="请输入关键词..." value="<{$_queries.ofRole}>"></select>
 		</div>
 	</div>
 
