@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
 use Cache;
 use App\RepayLog;
+use App\UserAddress;
 
 class PayOrder extends Model 
 {
@@ -180,7 +181,7 @@ class PayOrder extends Model
 	        if (Cache::has($repeat_key)) return false;
 	         
 	        Cache::put($repeat_key, 1, 5);//分钟数缓存5分钟
-	        $pay_msg = '阿拉丁 订单号:'.$this->getKey().' 已重复支付,支付信息为:';
+	        $pay_msg = '水费 订单号:'.$this->getKey().' 已重复支付,支付信息为:';
 	        switch ($paytype){
 	            case static::PAY_NONE:$pay_msg.='未支付';break;
 	            case static::PAY_OFFLINE:$pay_msg.='线下支付'; break;
@@ -197,3 +198,12 @@ class PayOrder extends Model
 	    return false;
 	}
 }
+
+//自动创建UserPieceDetail
+PayOrder::creating(function($order){
+    $address = UserAddress::find($order->address_id);
+    $order->account_num = $address->account_num;
+    $order->account_name = $address->account_name; 
+    $order->account_address = $address->account_address;
+    $order->account_phone = $address->account_phone;
+});

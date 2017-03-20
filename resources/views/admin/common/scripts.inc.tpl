@@ -29,7 +29,7 @@
 <script src="<{'js/common.js'|static}>"></script>
 <{/block}>
 <{block name="head-scripts-select2"}>
-<link rel="stylesheet" href="<{'js/select2/select2.min.css'|static}>"></script>
+<link rel="stylesheet" href="<{'js/select2/select2.min.css'|static}>">
 <script src="<{'js/select2/select2.min.js'|static}>"></script>
 <script src="<{'js/select2/i18n/zh-CN.js'|static}>"></script>
 <script src="<{'js/laravel.select.min.js'|static}>"></script>

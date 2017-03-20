@@ -19,12 +19,12 @@ body{
 	display: inline-block;
 	position: absolute;
 	top: 0;
-    height: 1.65rem;
-    line-height: 1.6rem;
+   	padding-top: 12px;
 	color: #fff;
 }
 .contain{
 	background: #eee;
+	padding-bottom:91px;
 }
 .user{
 		right: 5%;
@@ -404,6 +404,7 @@ body{
 }
 
 .dorm-book input[type="text"],
+.dorm-book input[type="password"],
 .contact-box input[type="text"]{
 	width: 74%;
     height: .8rem;
@@ -420,15 +421,16 @@ body{
 	right:4%;
 }
 .step-btn{
-	margin:1.5rem 4%;
+	margin:0.3rem 4%;
 }
-.step-btn>a,.reportcard>a{
-	 padding: 3% 16%;
+.step-btn>a,.reportcard>a,.step-btn>button{
+	padding: 3% 16%;
     font-size: .48rem;
     background: #00A7EE;
     border-radius: 4px;
     margin-right: 2%;
     color: #fff;
+	width:100%;
 }
 .step{
 	position: relative;
@@ -674,9 +676,8 @@ body{
 	width:72%!important;
 }
 .reason{
-	padding: 4%;
+	padding: 2% 2% 0px;
     background: #fff;
-    margin-bottom: -9%;
 }
 .reason>textarea{
 	width: 100%;
@@ -739,7 +740,7 @@ body{
 }
 /***********通知公告**************/
 .notice-box{
-	padding:2% 4%;
+	padding:2% 4% 91px;
 }
 .notice-content>a,.data-content>a,.answer-content>a{
 	position: relative;
@@ -779,7 +780,7 @@ body{
 	right:4%;
 }
 .noticeDtail{
-	padding: 3% 5%;
+	padding: 3% 5% 91px;
 }
 .detail-tit{
 	font-weight: 600;
@@ -843,7 +844,7 @@ body{
 }
 /**********咨询解答***********/
 .answer-box{
-	padding: 2% 4%;
+	padding: 2% 4% 91px;
 }
 .answer-content{
 	background: #eee!important;
@@ -856,7 +857,7 @@ body{
 	font-size: .65rem;
 }
 .myanswer-box{
-	padding-top: 3%;
+	#padding-top: 3%;
 }
 .myanswer a{
 	display: block;

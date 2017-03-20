@@ -78,4 +78,140 @@ return [
 			],
 		],
 	],
+    'user-address'=>[
+        'store' => [
+            'user_id'=>[
+                'name' => '会员',
+                'rules' => 'required|numeric',
+            ],
+            'account_num'=>[
+                'name' => '户号',
+                'rules' => 'required|numeric',
+            ],
+            'account_name'=>[
+                'name' => '户名',
+                'rules' => 'required',
+            ],
+            'account_address'=>[
+                'name' => '住址信息',
+                'rules' => 'required',
+            ],
+            'account_phone'=>[
+                'name' => '预留电话',
+                'rules' => 'required|phone',
+            ]
+        ]
+    ],
+    'banner' => [
+        'store' => [
+            'title' => [
+                'name' => '标题',
+                'rules' => 'required'
+            ],
+            'url' => [
+                'name' => '网址',
+                'rules' => 'url'
+            ],
+            'status' => [
+                'name' => '状态',
+                'rules' => 'required|bool'
+            ],
+            'cover' => [
+                'name' => '封面',
+                'rules' => 'required'
+            ],
+            'location' => [
+                'name' => '位置',
+                'rules' => 'numeric',
+            ],
+           'porder' => [
+                'name' => '排序',
+                'rules' => 'numeric'
+            ]
+        ],
+    ],
+    'notice' => [
+        'store' => [
+            'title' => [
+                'name' => '标题',
+                'rules' => 'required'
+            ],
+            'contents' => [
+                'name' => '内容',
+                'rules' => 'required'
+            ]
+        ]
+    ],
+    'article' => [
+        'store' => [
+            'title' => [
+                'name' => '标题',
+                'rules' => 'required'
+            ],
+            'pic_id' => [
+                'name' => '图片',
+                'rules' => 'numeric'
+            ],
+            'contents' => [
+                'name' => '内容',
+                'rules' => 'required'
+            ],
+            'type' =>[
+                'name' => '标题',
+                'rules' => 'numeric|max:2'
+            ]
+        ]
+    ],
+    'question' => [
+        'store' => [
+            'user_id' => [
+                'name' => '用户id',
+                'rules' => 'numeric|required'
+            ],
+            'content' => [
+                'name' => '内容',
+                'rules' => 'required'
+            ],
+            'pid' => [
+                'name' => '父级',
+                'rules' => 'numeric'
+            ],
+        ]
+    ],
+    'order'=>[
+        'store' => [
+            'user_id'=>[
+                'name' => '用户',
+                'rules' => 'required|numeric',
+            ],
+            'address_id'=>[
+                'name' => '地址',
+                'rules' => 'required|numeric',
+            ],
+            'account_num'=>[
+                'name' => '户号',
+                'rules' => [],
+            ],
+            'account_name'=>[
+                'name' => '户名',
+                'rules' => [],
+            ],
+            'account_address'=>[
+                'name' => '住址信息',
+                'rules' => [],
+            ],
+            'account_phone'=>[
+                'name' => '预留电话',
+                'rules' => [],
+            ],
+            'sumMoney'=>[
+                'name' => '交费总金额',
+                'rules' => 'required|numeric',
+            ],
+            'order_log'=>[
+                'name' => '订单日志',
+                'rules' => [],
+            ]
+        ]
+    ]
 ];

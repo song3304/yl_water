@@ -36,7 +36,7 @@
 <{block "body-container"}>	
 <div class="header">
 			<span><{$_site.title}></span>
-			<a href="user-center.html"><span class="user"><i class="iconfont icon-person"></i></span></a>
+			<a href="<{'ucenter'|url}>" style="padding-top:0;"><span class="user" style="padding-top:0;"><i class="iconfont icon-person"></i></span></a>
 		</div>
 		<div class="banner swiper-container">
             <div class="swiper-wrapper">
@@ -50,25 +50,25 @@
 		<div class="menu">
 			<ul class="clearfix">
 				<li>
-					<a href="self-report.html">
+					<a href="<{'order'|url}>">
 						<img src="<{'static/img/icon1.png'|url}>">
 						<p class="menu-txt">交水费</p>
 					</a>
 				</li>
 				<li>
-					<a href="green.html">
+					<a href="javascript:alert('正在开发，敬请期待..');"><!--href="<{'ucenter/fee_inquiry'|url}>"-->
 						<img src="<{'static/img/icon2.png'|url}>">
 						<p class="menu-txt">查水费</p>
 					</a>
 				</li>
 				<li>
-					<a href="notice.html">
+					<a href="<{'notice'|url}>">
 						<img src="<{'static/img/icon6.png'|url}>">
 						<p class="menu-txt">通知公告</p>
 					</a>
 				</li>
 				<li>
-					<a href="ask.html">
+					<a href="<{'question'|url}>">
 						<img src="<{'static/img/icon8.png'|url}>">
 						<p class="menu-txt">咨询帮助</p>
 					</a>

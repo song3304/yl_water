@@ -12,22 +12,31 @@
 */
 
 //$router->pattern('id', '[0-9]+'); //所有id都是数字
-
-$router->resources([
-	'member' => 'MemberController',
-]);
-
 $router->any('wechat/feedback/{aid}/{oid?}', 'WechatController@feedback');
 $router->addAnyActionRoutes([
 	'wechat',
 ]);
 
 $router->group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['auth', 'role:administrator']], function($router) {
-	
+    
 	$router->addAdminRoutes([
 		'member' => 'MemberController',
+	    'user_address'=>'UserAddressController',
+	    'banner' => 'BannerController',
+	    'company_info' => 'CompanyInfoController',
+	    'company_cms' => 'CompanyCmsController',
+	    'article' => 'ArticleController',
+	    'notice' => 'NoticeController',
+	    'question' => 'QuestionController',
+	    'order' => 'OrderController',
+	    'statistics' => 'StatisticsController',
 	]);
-
+	$router->get('banner/toggle/{id}','BannerController@toggle');
+	$router->get('question/reply/{id}','QuestionController@reply');
+	$router->get('question/show/{id}','QuestionController@show');
+	
+	$router->any('order/{id}/cancel','OrderController@cancel');
+	$router->any('order/{id}/recharge','OrderController@recharge');
 	//admin目录下的其它路由需放置在本条前
 	$router->addUndefinedRoutes();
 });

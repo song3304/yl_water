@@ -39,7 +39,7 @@ class CreateWatersTable extends Migration
 			$table->tinyInteger('status')->index()->comment = '订单状态';
 			$table->tinyInteger('pay_type')->default(0)->index()->comment = '支付方式，0, 未支付，1.线下支付 2.支付宝 3.微信支付 4.农商银行';
 			$table->string('out_trade_no',50)->nullable()->index()->commnet='对外支付订单号';
-			$table->string('order_log',50)->nullable()->comment = '充值未成功,日志';
+			$table->string('order_log',250)->nullable()->comment = '充值未成功,日志';
 			
 			$table->timestamps();
 			$table->softDeletes(); //软删除
@@ -64,6 +64,7 @@ class CreateWatersTable extends Migration
 			$table->string('title',150)->unique()->comment = '标题';
 			$table->text('contents')->nullable()->comment = '通知内容';
 			$table->timestamps();
+			$table->softDeletes(); //软删除
 		});
 
 		//常见问题
@@ -74,6 +75,7 @@ class CreateWatersTable extends Migration
 			$table->text('contents')->nullable()->comment = '问题内容';
 			$table->tinyInteger('type')->index()->default(0)->comment = '文章类型 0.常见问题 1:公司简介 2.公司资讯 ';
 			$table->timestamps();
+			$table->softDeletes(); //软删除
 		});
 
 		//咨询解答
@@ -82,15 +84,27 @@ class CreateWatersTable extends Migration
 			$table->integer('user_id')->unsigned()->comment = '用户ID';
 			$table->text('content')->nullable()->comment = '内容';
 			
-			$table->unsignedInteger('pid')->index()->comment = '父级id'; //父级id
+			$table->unsignedInteger('pid')->default(0)->index()->comment = '父级id'; //父级id
 			$table->unsignedInteger('order')->default(0)->index()->comment = 'TREE排序';
 			$table->unsignedInteger('level')->default(0)->index()->comment = 'TREE等级';
-			$table->string('path', '250')->index()->comment = 'TREE路径';
+			$table->string('path', '250')->nullable()->index()->comment = 'TREE路径';
 			$table->timestamps();
 			$table->softDeletes(); //软删除
 			
 			$table->foreign('user_id')->references('id')->on('users')
 				->onUpdate('cascade')->onDelete('cascade');
+		});
+		
+		//发现banner
+		Schema::create('banners', function (Blueprint $table) {
+		    $table->increments('id');
+		    $table->string('title',150)->comment = '标题';
+		    $table->string('url',150)->comment = 'url';
+		    $table->unsignedTinyInteger('status')->default(1)->comment = '状态：1,上架；0，下架';
+		    $table->unsignedTinyInteger('location')->default(0)->comment = '位置：0.首页 1.个人中心 2.通知公告 3.公司资讯 4.常见问题 5.我的问题';
+		    $table->unsignedInteger('cover')->comment = '封面';
+		    $table->unsignedInteger('porder')->index()->comment = '排序id';
+		    $table->timestamps();
 		});
 		
 		//支付宝日志
@@ -135,5 +149,7 @@ class CreateWatersTable extends Migration
 		Schema::drop('articles');
 		Schema::drop('questions');
 		Schema::drop('alipay_bills');
+		Schema::drop('repay_logs');
+		Schema::drop('banners');
 	}
 }

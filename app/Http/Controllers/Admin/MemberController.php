@@ -32,7 +32,7 @@ class MemberController extends Controller
 	public function data(Request $request)
 	{
 		$user = new User;
-		$builder = $user->newQuery()->with(['roles']);
+		$builder = $user->newQuery()->with(['roles'])->join('role_user', 'role_user.user_id', '=', 'users.id', 'LEFT');
 
 		$total = $this->_getCount($request, $builder, FALSE);
 		$data = $this->_getData($request, $builder, null, ['users.*']);

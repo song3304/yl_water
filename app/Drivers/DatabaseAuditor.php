@@ -14,6 +14,7 @@ class DatabaseAuditor {
      */
     public function audit($auditable)
     {
+        if(!config('auditing.is_enabled',false)) return true;
 		$data = $auditable->toAudit();
 		unset($data['id']);
         $report = Log::create(

@@ -14,4 +14,14 @@ class Question extends Tree
     {
         return $this->hasOne('App\\User', 'id', 'user_id');
     }
+    
+    public function childrens()
+    {
+        return $this->hasOne('App\\Question', 'pid', 'id');
+    }
+    
+    public function parents()
+    {
+        return $this->hasOne('App\\Question', 'id', 'pid')->with(['user']);
+    }
 }

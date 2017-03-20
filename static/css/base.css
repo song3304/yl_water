@@ -28,7 +28,12 @@ a {
 	/*消除火狐虚线*/
 	outline: none;
 }
-a:active,a:hover {  outline: 0;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+a:active,a:hover {  
+	outline: 0;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	text-decoration:none;
+	color:#999;
+}
 
 span,samp,a{
 	font-family: "微软雅黑";
