@@ -18,55 +18,25 @@
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	<div class="banner">
-		<img src="<{'static/img/self-report.png'|url}>">
+		<{if !empty($_banner)}>
+			<img src="<{"attachment?id="|url}><{$banner.cover}>"/>
+		<{else}>
+			<img src="<{'static/img/self-report.png'|url}>"/>
+		<{/if}>
 	</div>
 	<div class="notice-box">
 			<ul class="notice-content">
-				<a href="<{'notice/info'|url}>">
+				<{foreach $_notices as $notice}>
+				<a href="<{'notice/info?id='|url}><{$notice.id}>">
 				<li class="notice-list">
-					<h3 class="list-tit">2016-08-01</h3>
+					<h3 class="list-tit"><{$notice.created_at|date_format:"%Y-%m-%d"}></h3>
 				    <p class="list-txt">
-                                               根据录取通知书附带的新生入学交通指引到学校报到。
+                        <{$notice.title}>
 				    </p>
 				</li>
 				<span class="goin"><i class="iconfont icon-right"></i></span>
 				</a>
-				<a href="<{'notice/info'|url}>">
-				<li class="notice-list">
-					<h3 class="list-tit">2016-08-02</h3>
-				    <p class="list-txt">
-                                               根据录取通知书附带的新生入学交通指引到学校报到。
-				    </p>
-				</li>
-				<span class="goin"><i class="iconfont icon-right"></i></span>
-				</a>
-				<a href="<{'notice/info'|url}>">
-				<li class="notice-list">
-					<h3 class="list-tit">2016-08-03</h3>
-				    <p class="list-txt">
-                                               根据录取通知书附带的新生入学交通指引到学校报到,根据录取通知书附带的新生入学交通指引到学校报到,根据录取通知书附带的新生入学交通指引到学校报到。
-				    </p>
-				</li>
-				<span class="goin"><i class="iconfont icon-right"></i></span>
-				</a>
-				<a href="<{'notice/info'|url}>">
-				<li class="notice-list">
-					<h3 class="list-tit">2016-08-04</h3>
-				    <p class="list-txt">
-                                               根据录取通知书附带的新生入学交通
-				    </p>
-				</li>
-				<span class="goin"><i class="iconfont icon-right"></i></span>
-				</a>
-				<a href="<{'notice/info'|url}>">
-				<li class="notice-list">
-					<h3 class="list-tit">2016-08-05</h3>
-				    <p class="list-txt">
-                                               根据录取通知书附带的新生入学交通指引到学校报到。
-				    </p>
-				</li>
-				<span class="goin"><i class="iconfont icon-right"></i></span>
-				</a>
+				<{/foreach}>
 			</ul>
 	</div>
 	<{include file="home/footer.inc.tpl"}>	

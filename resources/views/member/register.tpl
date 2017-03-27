@@ -43,7 +43,7 @@
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	
-<form action="<{'member/addMember'|url nofilter}>"  method="POST" autocomplete="off" id="form">
+<form action="<{'member/addMember'|url nofilter}>"  method="post" autocomplete="off" id="form">
 	<input type="hidden" name="_token" value="<{csrf_token()}>">
 	<ul class="dorm-book">
 		<li>

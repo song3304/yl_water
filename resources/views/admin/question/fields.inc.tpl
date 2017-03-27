@@ -10,7 +10,7 @@
 	<label class="col-md-3 control-label" for="content"><{if $_data.act=='reply'}>回复<{else}>问题<{/if}></label>
 	<div class="col-md-9">
 		<input type="hidden" name="user_id" value="<{$_data.user_id}>"/>
-		<input type="hidden" name="pid" value="<{$_data.user_id}>"/>
+		<input type="hidden" name="pid" value="<{$_data.pid}>"/>
 		<textarea class="form-control" id="content" name="content" placeholder="请输入<{if $_data.act=='reply'}>回复<{else}>问题<{/if}>..."><{$_data.content}></textarea>
 	</div>
 </div>

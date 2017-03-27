@@ -21,14 +21,16 @@
 		<img src="<{'static/img/self-report.png'|url}>">
 	</div>
 	<div class="noticeDtail">
-		<p class="detail-tit">2016年大学生贫困助学金申请表2016年大学生贫困助学金申请表.
-		<span>2016-06-25</span>
+		<p class="detail-tit"><{$_question.content}>
+			<span><{$_question.created_at|date_format:"%Y-%m-%d"}></span>
 		</p>
-		<p class="detail-txt">
-                           时请持大学录取通知书且按照录取通知书报到时间到校报到，为保证报到工作顺利进行， 请勿提前或者延期报到，逾期一周不报到者，取消入学资格。
-		      持录取通知书可购买半价火车票。来校期间费用自理。 时请持大学录取通知书且按照录取通知书报到时间到校报到，为保证报到工作顺利进行， 请勿提前或者延期报到，
-		      逾期一周不报到者，取消入学资格。持录取通知书可购买半价火车票。来校期间费用自理 时请持大学录取通知书且按照录取通知书报到时间到校报到，为保证报到工作顺利进行，
-		</p>
+        <{if !empty($_question.childrens)}>
+        <p class="detail-txt" style="padding: 3%;"><{$_question.childrens.content}>
+        	<span style="float:right;font-size: 0.38rem;"><{$_question.childrens.created_at|date_format:"%Y-%m-%d"}></span>
+        </p>	
+        <{else}>
+        <p class="detail-txt">没有回复,等待管理员回复.</p>
+        <{/if}>
 	</div>
 	<{include file="home/footer.inc.tpl"}>	
 <{/block}>

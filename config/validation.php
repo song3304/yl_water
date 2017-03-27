@@ -68,7 +68,21 @@ return [
 				'name' => '密码',
 				'rules' => 'required',
 			],
-		]
+		],
+	    'modify_pwd'=>[
+	        'old_pwd' => [
+    	        'name' => '旧密码',
+    	        'rules' => 'required|min:6',
+    	    ],
+	        'password' => [
+    	        'name' => '新密码',
+    	        'rules' => 'required|min:6|confirmed',
+    	    ],
+    	    'password_confirmation ' => [
+    	        'name' => '确认密码',
+                'rules' => 'required',
+    	    ]
+	   ]
 	],
 	'tag' => [
 		'store' => [

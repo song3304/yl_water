@@ -21,6 +21,7 @@
 		});
 		$('.sex>label').click(function(){
 			$(this).addClass('sex-check').siblings().removeClass('sex-check');
+			$('#gender').val($(this).data('gender'));
 		});
 		$('.hd>li').click(function(){
 			var index=$(this).index();

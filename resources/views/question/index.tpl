@@ -19,7 +19,11 @@
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	<div class="banner">
-		<img src="<{'static/img/self-report.png'|url}>">
+		<{if !empty($_banner)}>
+			<a <{if !empty($_banner.url)}> href="<{$_banner.url}>"<{/if}>><img src="<{'attachment/resize?id='|url}><{$_banner.cover}>"></a>
+		<{else}>
+			<img src="<{'static/img/self-report.png'|url}>">
+		<{/if}>
 	</div>
 	<ul class="ask-box">
 			<li class="ask-item">

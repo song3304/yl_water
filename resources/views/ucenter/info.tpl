@@ -31,7 +31,7 @@
 	(function($){
 		$().ready(function(){
 			$('#avatar_aid').uploader();
-			//<{call validate selector='#form'}>
+			<{call validate selector='#form'}>
 		});
 	})(jQuery);
 	</script>
@@ -48,28 +48,28 @@
 	<ul class="dorm-book">
 		<li>
 			    <span class="book-tit">用户名</span>
-			    <input type="text"  name="username" id="username" value="song3304" readOnly="readOnly"> 
+			    <input type="text"  name="username" id="username" value="<{$user.username}>" readOnly="readOnly"> 
 			    <div class="sex">
-			    	<label>男</label>
-			    	<label>女</label>
-			    	<input type="hidden" name="gender" id="gender" value='0'/>
+			    	<{foreach 'fields.gender.children'|catalogs as $v}>
+			    	<label data-gender="<{$v.id}>"<{if $v.id==$user.gender.id}> class="sex-check"<{/if}>><{$v.title}></label>
+			    	<{/foreach}>
+			    	<input type="hidden" name="gender" id="gender" value='<{$user.gender.id}>'/>
 			    </div>
 		</li>
 		<li>
-			<span class="book-tit">妮称</span>
-		    <input type="text" name="nickname" id="nickname" placeholder="请输入妮称." />  
+			<span class="book-tit">昵称</span>
+		    <input type="text" name="nickname" id="nickname" placeholder="请输入昵称." value="<{$user.nickname}>"/>  
 		</li>
 		<li>
 			<span class="book-tit">邮箱</span>
-		    <input type="text" name="email" id="email" placeholder="请输入邮箱." />  
+		    <input type="text" name="email" id="email" placeholder="请输入邮箱." value="<{$user.email}>"/>  
 		</li>
 		<li>
 			<span class="book-tit" for="avatar_aid">上传图像</span>
-		    <input type="hidden" name="avatar_aid" id="avatar_aid" value="0">
+		    <input type="hidden" name="avatar_aid" id="avatar_aid" value="<{$user.avatar_aid}>">
 		</li>
 	</ul>
-	<div class="step-btn">
-		<input type="hidden" name="uid" value=""/>
+	<div class="step-btn" style="margin-bottom:100px;">
 		<button type="submit" class="ta-center db">修改</button>
 	</div>
 </form>

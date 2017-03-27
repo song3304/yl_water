@@ -25,7 +25,7 @@
 	<script type="text/javascript">
 	(function($){
 		$().ready(function(){
-			//<{call validate selector='#form'}>
+			<{call validate selector='#form'}>
 		});
 	})(jQuery);
 	</script>
@@ -61,16 +61,20 @@
 <form action="<{'order/toPay'|url nofilter}>"  method="post" autocomplete="off" id="form">
 	<input type="hidden" name="_token" value="<{csrf_token()}>">
 	<ul class="dorm-book">
-		<li style="cursor:pointer;" onclick="window.location.href='<{'ucenter/addressList?callback_url='|url}>'">
+		<li style="cursor:pointer;" id="choose_address">
 			<span class="book-tit">选择交费地址</span>
-			<label>
-				<div>户号:1232132&nbsp;&nbsp;</div>
-				<div>户名:#13楼401室&nbsp;&nbsp;</div>
-				<div>地址:熊家村二期还建房9栋201&nbsp;&nbsp;</div>
-				<div>电话:18301302257</div>
+			<label for="address_id">
+			<{if !empty($_user_address)}>
+				<div>户号:<{$_user_address.account_num}>&nbsp;&nbsp;</div>
+				<div>户名:<{$_user_address.account_name}>&nbsp;&nbsp;</div>
+				<div>地址:<{$_user_address.account_address}>&nbsp;&nbsp;</div>
+				<div>电话:<{$_user_address.account_phone}></div>
+				<div><input type="hidden" name="address_id" id="address_id" value="<{$_user_address.id}>"/></div>
+			<{else}>
+				<div><input type="hidden" name="address_id" id="address_id" value="<{$_user_address.id}>"/>没有地址,请你先添加交费地址.</div>
+			<{/if}>
 			</label>
 			<div style="min-width:10%;display: inline-block;text-align:right;"><img style="width:20px;" src="<{'static/img/arrow.png'|url}>"></div>
-	        <input type="hidden" name="address_id" id="address_id" value="1"/>  
 		</li>
 		<li>
 			<span class="book-tit">选择交费金额</span>
@@ -83,9 +87,17 @@
 		</li>
 	</ul>
 	<div class="step-btn">
-		<input type="hidden" name="callback_url" value="<{$_callback_url}>"/>
 		<button type="submit" class="ta-center db">交水费</button>
 	</div>
 </form>
 <{include file="home/footer.inc.tpl"}>	
 <{/block}>
+
+<{block "body-scripts-jquery"}>
+(function($){
+	//选择交费地址
+	$('#choose_address').click(function(){
+		window.location.href="<{'ucenter/addressList?address_id='|url}><{$_user_address.id}>&callback_url=<{'order/index'|url|urlencode}>";
+	});
+})(jQuery);	
+<{/block}>	

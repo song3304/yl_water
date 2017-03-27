@@ -46,7 +46,7 @@
     	<span class="pro-line"><img src="<{'static/img/pro-line4.png'|url}>"></span>
 	</div>
 	
-<form action="<{'member'|url nofilter}>"  method="POST" autocomplete="off" id="form">
+<form action="<{'member/auth'|url nofilter}>"  method="POST" autocomplete="off" id="form">
 	<input type="hidden" name="_token" value="<{csrf_token()}>">
 	<ul class="dorm-book">
 		<li>

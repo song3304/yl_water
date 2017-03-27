@@ -35,15 +35,14 @@
 <{/block}>
 <{block "body-container"}>	
 <div class="header">
-			<span><{$_site.title}></span>
+			<span><{config('settings.title')}></span>
 			<a href="<{'ucenter'|url}>" style="padding-top:0;"><span class="user" style="padding-top:0;"><i class="iconfont icon-person"></i></span></a>
 		</div>
 		<div class="banner swiper-container">
             <div class="swiper-wrapper">
-                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="<{'static/img/banner1.png'|url}>" alt=""></a></div>
-                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="<{'static/img/banner1.png'|url}>" alt=""></a></div>
-                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="<{'static/img/banner1.png'|url}>" alt=""></a></div>
-                <div class="swiper-slide"><a href="javascript:void(0)"><img class="swiper-lazy" data-src="<{'static/img/banner1.png'|url}>" alt=""></a></div>
+            	<{foreach $_banners as $banner}>
+                <div class="swiper-slide"><a href="<{if $banner.url}><{$banner.url}><{else}>javascript:void(0);<{/if}>"><img class="swiper-lazy" data-src="<{"attachment?id="|url}><{$banner.cover}>" alt="<{$banner.title}>"></a></div>
+                <{/foreach}>
             </div>
             <div class="swiper-pagination"></div>
         </div>
@@ -77,37 +76,32 @@
 		</div>
 		<div class="brief">
 			<h3 class="brief-tit">公司简介</h3>
+			<a href="<{'article/company_info'|url}>">
 			<div class="brirf-content clearfix">
 				<div class="bc-left fl">
-					<img src="<{'static/img/pic1.png'|url}>">
+					<img src="<{"attachment?id="|url}><{$_company_info.pic_id}>">
 				</div>
 				<div class="bc-right fr">
-					合肥学院(Hefei University)简称合院， 是国家首批61所"卓越工程师教育培养计划"和首批52所"服务国家特殊需求人才培养项目"培养硕士专业学位研究生试点工
+					<{$_company_info.contents|truncate:40:"..."}>
 				</div>
 			</div>
+			</a>
 		</div>
 		<dl class="news">
 			<dt class="news-tit">公司资讯</dt>
+			<{foreach $_company_cms as $cms_item}>
+			<a href="<{'article/cms_info?id='|url}><{$cms_item.id}>">
 			<dd class="news-content clearfix">
 				<div class="nc-left fl">
-					<img src="<{'static/img/pic1.png'|url}>">
+					<img src="<{"attachment?id="|url}><{$cms_item.pic_id}>">
 				</div>
 				<div class="nc-right fr">
-					<a class="ncr-top">李克强与默克尔共同考察合肥学院宣布 建立中德教育合作示范基地合作基金
-					</a>
-					<span class="nc-time">07-26 17:00</span>
+					<a class="ncr-top"><{$cms_item.contents|truncate:40:"..."}></a>
+					<span class="nc-time"><{$cms_item.created_at|date_format:"%m-%d %H:%M"}></span>
 				</div>
 			</dd>
-			<dd class="news-content clearfix">
-				<div class="nc-left fl">
-					<img src="<{'static/img/pic1.png'|url}>">
-				</div>
-				<div class="nc-right fr">
-					<a class="ncr-top">李克强与默克尔共同考察合肥学院宣布 建立中德教育合作示范基地合作基金
-					</a>
-					<span class="nc-time">07-26 17:00</span>
-				</div>
-			</dd>
+			</a>
+			<{/foreach}>
 		</dl>
 	<{include file="home/footer.inc.tpl"}>	
 <{/block}>

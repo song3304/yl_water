@@ -48,15 +48,18 @@
 
 <{block "body-container"}>
 	<div class="header">
-		<span>交水费</span>
+		<span>交水费-选择支付方式</span>
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	<h5 class="paytitle">支付方式</h5>
+	<form action="<{'order/pay'|url nofilter}>"  method="post" autocomplete="off" id="form">
+	<input type="hidden" name="_token" value="<{csrf_token()}>">
+	<input type="hidden" name="id" value="<{$_order.id}>">
 	<div class="container-fluid">
 		<div class="row setpay">
 			<label for="pay1" class="col-xs-12">
 				<div class="radio col-xs-2 text-center">
-					<input type="radio" name="chosepay" id="pay1"  class="form-control" value=""  aria-label="">
+					<input type="radio" name="pay_type" class="form-control" value="2"<{if $_order.pay_type == 3}> checked="checked"<{/if}> aria-label="">
 				</div>
 				<div class="col-xs-2 center-block">
 					<img src="<{'static/img/zf_03.png'|url}>" class="img-responsive center-block">
@@ -71,7 +74,7 @@
 		<div class="row setpay">
 			<label for="pay2" class="col-xs-12">
 				<div class="radio col-xs-2 text-center">
-					<input type="radio" name="chosepay" id="pay2" class="form-control" value="" checked="checked" aria-label="">
+					<input type="radio" name="pay_type" class="form-control" value="3"<{if $_order.pay_type == 3 || empty($_order.pay_type)}> checked="checked"<{/if}> aria-label="">
 				</div>
 				<div class="col-xs-2 center-block">
 					<img src="<{'static/img/wx_06.png'|url}>" class="img-responsive center-block">
@@ -86,7 +89,7 @@
 		<div class="row setpay">
 			<label for="pay3" class="col-xs-12">
 				<div class="radio col-xs-2 text-center">
-					<input type="radio" name="chosepay" id="pay3" class="form-control" value="" disabled="disabled" aria-label="">
+					<input type="radio" name="pay_type" class="form-control" value="4" disabled="disabled" aria-label="">
 				</div>
 				<div class="col-xs-2 center-block">
 					<img src="<{'static/img/ye_07.png'|url}>" class="img-responsive center-block">
@@ -112,7 +115,7 @@
 			<button class="confirm">去支付</button>
 		</div>		
 	</div>
-
+	</form>	
 <{/block}>
 
 <{block "body-scripts"}>

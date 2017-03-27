@@ -26,12 +26,10 @@
 <{block "head-scripts-plus"}>
 	<script src="<{'static/js/rem.js'|url}>"></script>
 	<script src="<{'static/js/basic.js'|url}>"></script>
-	<{include file="common/uploader.inc.tpl"}>
 	<script type="text/javascript">
 	(function($){
 		$().ready(function(){
-			$('#avatar_aid').uploader();
-			//<{call validate selector='#form'}>
+			<{call validate selector='#form'}>
 		});
 	})(jQuery);
 	</script>
@@ -60,7 +58,6 @@
 		</li>
 	</ul>
 	<div class="step-btn">
-		<input type="hidden" name="uid" value=""/>
 		<button type="submit" class="ta-center db">修改</button>
 	</div>
 </form>

@@ -15,9 +15,9 @@
 <{block "body-container"}>
 	<div class="write-info">
 			<span>
-				<img src="<{'static/img/no-person.png'|url}>">
+				<img src="<{"attachment?id="|url}><{$user.avatar_aid}>" class="img-circle">
 			</span>
-			<p>您还没有填写信息哦</p>
+			<p><{if $user.nickname}><{$user.nickname}><{else}>您没有设置你昵称,请在个人信息中修改<{/if}></p>
 			<span class="goin"><i class="iconfont icon-right"></i></span>
 		</div>
 		<ul class="ask-box">
@@ -51,7 +51,7 @@
 			</li>
 		</ul>
 		<div class="sign-out">
-				<a href="#">
+				<a href="<{'member/logout'|url}>">
 					<i class="iconfont icon-logout"></i>
 				   <span>退出</span>
 				</a>
