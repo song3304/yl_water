@@ -43,7 +43,7 @@
 <{foreach $_order_list as $order_item}>
 <div class="address">
 		<div class="border_top"></div>
-		<h1>订单编号：<span><{$order_item.id}></span></h1>
+		<h1>订单编号：<span><{$order_item.id}></span>&nbsp;&nbsp;&nbsp;&nbsp;时间：<span><{$order_item.created_at|date_format:"%m-%d %H:%M"}></span></h1>
     	<h2>户号：<span><{$order_item.account_num}></span></h1>
         <h2>户名：<span><{$order_item.account_name}></span>&nbsp;&nbsp;&nbsp;&nbsp;电话：<span><{$order_item.account_phone}></span></h2>
         <h2>地址：<span><{$order_item.account_address}></span></h2>
