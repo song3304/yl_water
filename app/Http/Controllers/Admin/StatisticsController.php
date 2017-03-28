@@ -19,7 +19,7 @@ class StatisticsController extends Controller
 	public function index(Request $request)
 	{
 		$order = new Order;
-		$builder = $order->newQuery()->where('status',Order::PAID)->groupBy(DB::raw('date(created_at)'));
+		$builder = $order->newQuery()->where('status','>=',Order::PAID)->groupBy(DB::raw('date(created_at)'));
 		$pagesize = $request->input('pagesize') ?: config('size.models.'.$order->getTable(),config('size.common'));
 		$base = boolval($request->input('base')) ?: false;
         
@@ -33,10 +33,10 @@ class StatisticsController extends Controller
 	public function data(Request $request)
 	{
 		$order = new Order;
-		$builder = $order->newQuery()->where('status',Order::PAID)->groupBy(DB::raw('date(created_at)'));
+		$builder = $order->newQuery()->where('status','>=',Order::PAID)->groupBy(DB::raw('date(created_at)'));
 		$total = $this->_getCount($request, $builder, FALSE);
 		
-		$static_data = $this->static_all($order->newQuery()->where('status',Order::PAID)->groupBy(DB::raw('date(created_at) desc,pay_type'))->get(['*', DB::raw('date(created_at) as s_date,sum(`sumMoney`) as `s_val`')]));
+		$static_data = $this->static_all($order->newQuery()->where('status','>=',Order::PAID)->groupBy(DB::raw('date(created_at) desc,pay_type'))->get(['*', DB::raw('date(created_at) as s_date,sum(`sumMoney`) as `s_val`')]));
 		$data = $this->_getData($request, $builder);
 		$data['recordsTotal'] = $total;
 		$data['recordsFiltered'] = $data['total'];
@@ -44,10 +44,10 @@ class StatisticsController extends Controller
 		return $this->api($data);		
 	}
 	
-	public function dexport(Request $request)
+	public function export(Request $request)
 	{
 		$order = new Order;
-		$builder = $order->newQuery()->where('status',Order::PAID)->groupBy(DB::raw('date(created_at)'));
+		$builder = $order->newQuery()->where('status','>=',Order::PAID)->groupBy(DB::raw('date(created_at)'));
 		$page = $request->input('page') ?: 0;
 		$pagesize = $request->input('size') ?: config('size.export', 1000);
 		$_builder = clone $builder;
@@ -66,7 +66,7 @@ class StatisticsController extends Controller
 		    if(!empty($filters['created_at'])){$created_at=$filters['created_at'];$data[] = ['起始时间',$created_at['min'],'终止时间',$created_at['max']];}
 		}
 	    $data[]= ['编号','日期','购买','线下','支付宝','微信 '];
-		$static_data = $this->static_all($order->newQuery()->where('status',Order::PAID)->groupBy(DB::raw('date(created_at) desc,pay_type'))->get(['*', DB::raw('date(created_at) as s_date,sum(`sumMoney`) as `s_val`')]));
+		$static_data = $this->static_all($order->newQuery()->where('status','>=',Order::PAID)->groupBy(DB::raw('date(created_at) desc,pay_type'))->get(['*', DB::raw('date(created_at) as s_date,sum(`sumMoney`) as `s_val`')]));
 		foreach ($static_data as $item){
 		    $data[] = [
 		        '编号'=>$item['id'],
