@@ -18,10 +18,6 @@ use App\Tools\Alipay\AlipayTradeService;
 
 class PayController extends Controller
 {
-//     public function test(){
-//         $order = Order::findOrFail(130);
-//         $order->pay(1,true,Order::PAY_WEIXIN,'16112915134000000130');
-//     }
     //支付宝支付
 	public function notifyAlipay(Request $request,$oid=null){
 	    $oid = $request->input('oid') ?: $oid;
@@ -111,7 +107,8 @@ class PayController extends Controller
     
             $title = '交水费(地址:'.$order->account_address.')';
             $unified_order = (new UnifiedOrder('NATIVE', date('ymdHis').str_pad($order->getKey(), 8, '0', STR_PAD_LEFT), $title, $order->sumMoney*100))
-            ->SetNotify_url(url('notifyWeixin/'.$order->getKey()))->setProductId($order_id);
+            ->SetNotify_url(url('pay/notifyWeixin/'.$order->getKey()))
+            ->setProductId($order_id);
             $UnifiedOrderResult = $pay->unifiedOrder($unified_order);
             if ( $UnifiedOrderResult['return_code'] != 'SUCCESS' || empty($UnifiedOrderResult['prepay_id']))
                 return $this->failure(['content' => $UnifiedOrderResult['return_msg']]);

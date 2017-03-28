@@ -175,7 +175,7 @@ class PayOrder extends Model
 	}
 	//检查再次支付
 	public function check_repeat_pay($total_fee,$paytype,$out_trade_no){
-	    if($this->status == Order::PAID && $this->pay_type >0 && $this->out_trade_no != $out_trade_no){//已经支付
+	    if($this->status == static::PAID && $this->pay_type >0 && $this->out_trade_no != $out_trade_no){//已经支付
 	        //避免重复发送
 	        $repeat_key = "repeat_" . $out_trade_no;
 	        if (Cache::has($repeat_key)) return false;

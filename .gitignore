@@ -9,3 +9,5 @@
 /.htaccess
 /vendor/composer
 /vendor/autoload.php
+/b.php
+/test.php
