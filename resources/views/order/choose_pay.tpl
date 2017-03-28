@@ -52,7 +52,7 @@
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	<h5 class="paytitle">支付方式</h5>
-	<form action="<{'order/pay'|url nofilter}>"  method="post" autocomplete="off" id="form">
+	<form action="<{'order/pay'|url nofilter}>"  method="get" autocomplete="off" id="form">
 	<input type="hidden" name="_token" value="<{csrf_token()}>">
 	<input type="hidden" name="id" value="<{$_order.id}>">
 	<div class="container-fluid">

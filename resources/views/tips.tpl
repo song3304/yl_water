@@ -28,7 +28,7 @@
 					<{/if}>
 					</script>
 				<{else}>
-					<a href="<{$url.previous}>" target="_self">请后退页面</a>
+					<a href="<{if $url.previous}><{$url.previous}><{else}>javascript:window.history.go(-1);<{/if}>" target="_self">请后退页面</a>
 				<{/if}>
 			</div>
 		</div>

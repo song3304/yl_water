@@ -22,6 +22,20 @@
 
 <{block "head-scripts-plus"}>
 	<script src="<{'static/js/rem.js'|url}>"></script>
+	<script type="text/javascript">
+	(function($){
+		$().ready(function(){
+			var pay_int=setInterval(function(){
+				$.get('<{'order/listen_order'|url}>',{address_id:'<{$_order.address_id}>',function(result){
+					if(response.result == "success"){
+						window.clearInterval(pay_int);
+						window.location.href = "<{'order/paysuccess?address_id='|url}><{$_order.address_id}>";
+					}
+				}}
+			},1000);
+		});
+	})(jQuery);
+</script>
 <{/block}>
 
 <{block "body-container"}>
@@ -32,7 +46,8 @@
 	<div class="text-center">
 		<h5 style="margin:10px;"><{$_pay_info['msg']}></h5>
 		<div><img src="<{'qr/index?text='|url}><{$_qrcode|urlencode}>" style="max-width:60%;"/></div>
+		<p class="col-xs-12 text-center">(温馨提示:保存以上面二维码,扫描后可直接完成交费)</p>
 	</div>
-
+	<div id="msg" class="text-center" style="margin-top:10px;"><a href="<{'home/index'|url}>">取消支付<a> &nbsp;&nbsp; <a href="<{'order/paysuccess?address_id='|url}><{$_order.address_id}>">支付成功</a></div>	
 <{include file="home/footer.inc.tpl"}>	
 <{/block}>

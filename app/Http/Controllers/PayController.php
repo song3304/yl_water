@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Cache;
 
 use App\AlipayBill;
 use Plugins\Wechat\App\WechatAccount;
@@ -115,6 +116,9 @@ class PayController extends Controller
     
             $feedback = new Feedback($api);
             $xml =  $feedback->getPayXML($UnifiedOrderResult);
+            //重置支付标记
+            $pay_order_key = "pay_" . $order->user_id.'_'.$order->address_id;           
+            Cache::put($pay_order_key, $order->id, 3);//分钟数缓存5分钟
             echo $xml;exit;
         });
         return $result;

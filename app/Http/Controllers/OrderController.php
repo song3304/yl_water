@@ -5,6 +5,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\PayOrder as Order;
 use Auth;
+use Cache;
 use App\User;
 use App\UserAddress;
 //微信二维码支付
@@ -66,6 +67,7 @@ class OrderController extends Controller
 	    
 	   $pay_type = $request->get('pay_type');
 	   $order->update(['pay_type'=>$pay_type]);
+	   $this->_order = $order;
 	   //跳转到相应支付
 	   if($pay_type == Order::PAY_WEIXIN){
 	       //微信支付
@@ -84,12 +86,34 @@ class OrderController extends Controller
 	       //农商行 未处理
 	       
 	   }
+
 	   return $this->view('order.go_to_pay');
 	}
-	
 	//支付成功，跳出页面
 	public function paysuccess(Request $request)
 	{
+	    $address_id = $request->get('address_id');
+	    $pay_order_key = "pay_" .$this->user->getKey().'_'.$address_id;
+	    $order_id = Cache::get($pay_order_key);//分钟数缓存5分钟
+	    if(empty($order_id)){
+	        return $this->failure('order.scan_code_fail');  
+	    }else{
+	        $this->_order = Order::find($order_id);
+	    }
 	    return $this->view('order.paysuccess');
+	}
+	//监听订单
+	public function listenOrder(Request $request)
+	{
+	   $address_id = $request->get("address_id");
+	   if(empty($address_id)) return $this->failure('order.pay_unknow');
+	   $pay_order_key = "pay_" .$this->user->getKey().'_'.$address_id;
+	   $order_id = Cache::get($pay_order_key);//分钟数缓存5分钟
+	   $order = Order::find($order_id);
+	   if($order->status>1){
+	       return $this->failure('order.pay_success');
+	   }else{
+	       return $this->failure('order.pay_unknow');
+	   }
 	}
 }
