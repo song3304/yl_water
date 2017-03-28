@@ -9,6 +9,7 @@ return [
 		'wechat_depots' => 5,
 		'wechat-users' => 50,
 		'wechat-messages' => 50,
+	    'orders' => 5,
 	    'questions' => 5,
 	    'articles' => 5
 	], 

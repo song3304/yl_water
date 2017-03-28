@@ -42,6 +42,7 @@ class OrderController extends Controller
 	    
 	    $order = Order::create($data+['user_id'=>$this->user->getKey()]);
 	    if($order){
+	        $order->init();
 	        return $this->success('order.create_order_success', url('order/choose_pay?id=').$order->getKey());
 	    }else{
 	       return $this->failure('order.create_order_fail');    
@@ -75,7 +76,7 @@ class OrderController extends Controller
 	       $bizpayurl->setProductId($order->getKey());
 	       $qrcode = $pay->bizpayurl($bizpayurl);
            $this->_qrcode = 'weixin://wxpay/bizpayurl?'.http_build_query($qrcode);
-           $this->_pay_type = "weixin";
+           $this->_pay_info = ['type'=>"weixin",'msg'=>'请使用微信客户端，打开扫一扫,完成支付.'];
 	   }elseif($pay_type == Order::PAY_ALIPAY){
 	       //支付宝
 

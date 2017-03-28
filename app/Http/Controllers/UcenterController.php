@@ -13,6 +13,7 @@ use Addons\Core\Controllers\ThrottlesLogins;
 use App\User;
 use Hash;
 use App\UserAddress;
+use App\PayOrder as Order;
 
 class UcenterController extends Controller
 {
@@ -116,12 +117,20 @@ class UcenterController extends Controller
 	//个人缴费纪录
 	public function orderList(Request $request)
 	{
-	    return $this->view('ucenter.order_list');
+	    $order = new Order();
+	    $pagesize = $request->input('pagesize') ?: config('size.models.'.$order->getTable(),config('size.common'));
+	    $this->_order_list = $order::with(['user'])->where('user_id',$this->user->id)->orderBy('created_at','desc')->paginate($pagesize);
+	    return intval($request->get('page'))>1 ?$this->view('ucenter.order_list_datatable'):$this->view('ucenter.order_list');
 	}
-	//生成支付二维码
-	public function qrcode(Request $request)
+	//删除个人缴费记录
+	public function orderRemove(Request $request)
 	{
-	    return $this->view('ucenter.qrcode');
+	    $order_id = intval($request->get('order_id'));
+	    $result = Order::where('user_id',$this->user->id)->where('id',$order_id)->delete();
+	    if($result)
+	        return $this->success('ucenter.order_remove_success');
+	    else
+	        return $this->failure('ucenter.order_remove_fail');
 	}
 	//个人水费查询
 	public function feeInquiry(Request $request)

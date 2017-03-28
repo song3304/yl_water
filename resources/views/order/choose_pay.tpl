@@ -59,7 +59,7 @@
 		<div class="row setpay">
 			<label for="pay1" class="col-xs-12">
 				<div class="radio col-xs-2 text-center">
-					<input type="radio" name="pay_type" class="form-control" value="2"<{if $_order.pay_type == 3}> checked="checked"<{/if}> aria-label="">
+					<input type="radio" name="pay_type" class="form-control" disabled="disabled"  value="2"<{if $_order.pay_type == 2}> checked="checked"<{/if}> aria-label="">
 				</div>
 				<div class="col-xs-2 center-block">
 					<img src="<{'static/img/zf_03.png'|url}>" class="img-responsive center-block">

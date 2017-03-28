@@ -96,7 +96,7 @@
 					<img src="<{"attachment?id="|url}><{$cms_item.pic_id}>">
 				</div>
 				<div class="nc-right fr">
-					<a class="ncr-top"><{$cms_item.contents|truncate:40:"..."}></a>
+					<a href="<{'article/cms_info?id='|url}><{$cms_item.id}>" class="ncr-top"><{$cms_item.contents|truncate:40:"..."}></a>
 					<span class="nc-time"><{$cms_item.created_at|date_format:"%m-%d %H:%M"}></span>
 				</div>
 			</dd>

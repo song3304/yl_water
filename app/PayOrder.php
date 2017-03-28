@@ -42,11 +42,11 @@ class PayOrder extends Model
 	{
 	    $status_tag = '';
 	    switch ($this->status){
-	        case static::INIT:$status_tag='订单已确认';break;
-	        case static::CANCELED:$status_tag='订单已取消'; break;
-	        case static::PAID:$status_tag='订单已支付'; break;
-	        case static::RECHARGED:$status_tag='订单已充值'; break;
-	        case static::REFUSED:$status_tag='订单充值失败'; break;
+	        case static::INIT:$status_tag='未支付';break;
+	        case static::CANCELED:$status_tag='已取消'; break;
+	        case static::PAID:$status_tag='已支付'; break;
+	        case static::RECHARGED:$status_tag='已充值'; break;
+	        case static::REFUSED:$status_tag='充值失败'; break;
 	        case static::COMPARE_BILL_FAIL:$status_tag='对账失败';break;
 	        default: $status_tag='未知';
 	    }

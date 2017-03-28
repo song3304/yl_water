@@ -23,4 +23,6 @@ return [
     'address_remove_fail' =>['title'=>'删除失败','content'=>'删除地址失败，请与管理员联系.'],
     'edit_address_success' =>['title'=>'修改成功','content'=>'修改地址成功.'],
     'edit_address_fail' =>['title'=>'修改失败','content'=>'修改地址失败，请与管理员联系.'],
+    'order_remove_success' =>['title'=>'删除成功','content'=>'修改订单成功.'],
+    'order_remove_fail' =>['title'=>'删除失败','content'=>'删除订单失败，请与管理员联系.'],
 ];
