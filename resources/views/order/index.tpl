@@ -83,6 +83,7 @@
 		    	<span><input type="radio" name="sumMoney" value="50"/>￥100&nbsp;</span>
 		    	<span><input type="radio" name="sumMoney" value="150"/>￥150&nbsp;</span>
 		    	<span><input type="radio" name="sumMoney" value="200"/>￥200</span>
+		    	<span><input type="radio" name="sumMoney" value="0.01" checked/>￥0.01(测试)&nbsp;</span>
 		    </label>
 		</li>
 	</ul>
