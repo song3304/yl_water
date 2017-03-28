@@ -25,4 +25,5 @@ return [
     'edit_address_fail' =>['title'=>'修改失败','content'=>'修改地址失败，请与管理员联系.'],
     'order_remove_success' =>['title'=>'删除成功','content'=>'修改订单成功.'],
     'order_remove_fail' =>['title'=>'删除失败','content'=>'删除订单失败，请与管理员联系.'],
+    'order_cannt_remove' =>['title'=>'不能删除,已经支付订单不能删除','content'=>'不能删除,已经支付订单不能删除.'],
 ];

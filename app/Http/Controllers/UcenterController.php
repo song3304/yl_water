@@ -126,6 +126,9 @@ class UcenterController extends Controller
 	public function orderRemove(Request $request)
 	{
 	    $order_id = intval($request->get('order_id'));
+	    $order = Order::where('user_id',$this->user->id)->where('id',$order_id)->first();
+	    if(!empty($order) && $order->status > Order::INIT) 
+	        return $this->failure('ucenter.order_cannt_remove');
 	    $result = Order::where('user_id',$this->user->id)->where('id',$order_id)->delete();
 	    if($result)
 	        return $this->success('ucenter.order_remove_success');

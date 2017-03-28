@@ -8,15 +8,16 @@
 
 <{block "head-scripts-plus"}>
 	<script type="text/javascript">
+	 var current_page = <{$_order_list->currentPage()}>;
+ 	 var last_page = <{$_order_list->lastPage()}>;
 	(function($){
-		$().ready(function(){
-			function bind_click(){
-				$(".pay").click(function(){
+		function bind_click(){
+				$(".pay").off('click').on('click',function(){
 						var order_id = $(this).data('oid');
 						window.location.href="<{'order/choose_pay?id='|url}>"+order_id;
 					});
 				
-				$(".delete").click(function(){
+				$(".delete").off('click').on('click',function(){
 					var _obj = this;
 					$.get('<{'ucenter/order_remove'|url}>',{order_id:$(_obj).data('oid')},function(response){
 						if(response.result == "success"){
@@ -26,9 +27,25 @@
 						}
 					},'json');	
 				});
-			}
+		}
+		$().ready(function(){
 			bind_click();
 		});
+		$(window).scroll(function(){
+			if(current_page >= last_page) return false;
+			var $this =$(this),		
+			viewH =$(this).height(),//可见高度		
+			contentH =$(document.body).height(),//内容高度		
+			scrollTop =$(this).scrollTop();//滚动高度
+			if(contentH - viewH - scrollTop <= 2)  //到达底部2px时,加载新内容			
+			{ 		
+				$.post("<{'ucenter/order_list'|url}>",{page:++current_page},function(data){
+					$('#container').append(data);
+					bind_click();
+				},'html');
+			}
+		});
+		
 	})(jQuery);
 	</script>
 <{/block}>
@@ -62,26 +79,4 @@
 	</div>
 <{/foreach}>
 </div>
-<script>
- var current_page = <{$_order_list->currentPage()}>;
- var last_page = <{$_order_list->lastPage()}>;
-(function($) {
-	$().ready(function(){
-		$(window).scroll(function(){
-			if(current_page >= last_page) return false;
-			var $this =$(this),		
-			viewH =$(this).height(),//可见高度		
-			contentH =$(document.body).height(),//内容高度		
-			scrollTop =$(this).scrollTop();//滚动高度
-			if(contentH - viewH - scrollTop <= 2)  //到达底部2px时,加载新内容			
-			{ 		
-				$.post("<{'ucenter/order_list'|url}>",{page:++current_page},function(data){
-					$('#container').append(data);
-					bind_click();
-				},'html');
-			}
-		});
-	});
-})(jQuery);
-</script>
 <{/block}>
