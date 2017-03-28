@@ -96,10 +96,7 @@ class PayController extends Controller
             }else{
                 if($order->status >= Order::PAID){
                     //重新生成订单
-                    $order_data = $order->toArray();
-                    unset($order_data['id']);unset($order_data['out_trade_no']);
-                    unset($order_data['pay_type']);unset($order_data['order_log']);
-                    $order_data['status'] = Order::INIT;
+                    $order_data = ['user_id'=>$order->user_id,'address_id'=>$order->address_id,'sumMoney'=>$order->sumMoney,'status'=>Order::INIT];
                     $order = Order::create($order_data);
                 }else{
                     $order->update(['status'=>Order::INIT]);

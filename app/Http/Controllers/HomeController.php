@@ -34,10 +34,4 @@ class HomeController extends Controller
 	    $this->_nav = 'index';//首页
         return $this->view('home.index');		
 	}
-	
-	public function test()
-	{
-	    Cache::put('pay_4_2', 4, 3);//分钟数缓存5分钟
-	    echo  Cache::get('pay_4_2');
-	}
 }
