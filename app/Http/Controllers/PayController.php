@@ -10,9 +10,10 @@ use Plugins\Wechat\App\WechatAccount;
 use Plugins\Wechat\App\Tools\API;
 use Plugins\Wechat\App\Tools\Pay as WechatPayTool;
 use Plugins\Wechat\App\WechatBill;
-use App\Order;
-use App\TrainOrder;
-//
+use App\PayOrder as Order;
+use Plugins\Wechat\App\Tools\Pay\UnifiedOrder;
+use Plugins\Wechat\App\Tools\Feedback;
+
 use App\Tools\Alipay\AlipayTradeService;
 
 class PayController extends Controller
@@ -79,5 +80,46 @@ class PayController extends Controller
     //农商银行支付
     public function notifyRBC(Request $request,$oid=null){
         //未处理
+    }
+    /**
+     * 微信支付回调
+     * @return [type] [description]
+     */
+    public function feedback(Request $request)
+    {
+        $account = WechatAccount::findOrFail(1);
+        $api = new API($account->toArray(), $account->getKey());
+    
+        $pay = new WechatPayTool($api);
+        $result = $pay->notify(function($result, &$message) use($pay,$api){
+            $order_id = $result['product_id'];
+            $order = Order::find($order_id);
+            if (empty($order)){
+                return $this->failure_noexists();
+            }else{
+                if($order->status >= Order::PAID){
+                    //重新生成订单
+                    $order_data = $order->toArray();
+                    unset($order_data['id']);unset($order_data['out_trade_no']);
+                    unset($order_data['pay_type']);unset($order_data['order_log']);
+                    $order_data['status'] = Order::INIT;
+                    $order = Order::create($order_data);
+                }else{
+                    $order->update(['status'=>Order::INIT]);
+                }
+            }
+    
+            $title = '交水费(地址:'.$order->account_address.')';
+            $unified_order = (new UnifiedOrder('NATIVE', date('ymdHis').str_pad($order->getKey(), 8, '0', STR_PAD_LEFT), $title, $order->sumMoney*100))
+            ->SetNotify_url(url('notifyWeixin/'.$order->getKey()))->setProductId($order_id);
+            $UnifiedOrderResult = $pay->unifiedOrder($unified_order);
+            if ( $UnifiedOrderResult['return_code'] != 'SUCCESS' || empty($UnifiedOrderResult['prepay_id']))
+                return $this->failure(['content' => $UnifiedOrderResult['return_msg']]);
+    
+            $feedback = new Feedback($api);
+            $xml =  $feedback->getPayXML($UnifiedOrderResult);
+            echo $xml;exit;
+        });
+        return $result;
     }
 }
