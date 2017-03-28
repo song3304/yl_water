@@ -26,12 +26,12 @@
 	(function($){
 		$().ready(function(){
 			var pay_int=setInterval(function(){
-				$.get('<{'order/listen_order'|url}>',{address_id:'<{$_order.address_id}>',function(result){
+				$.get('<{'order/listen_order'|url}>',{address_id:'<{$_order.address_id}>'},function(response){
 					if(response.result == "success"){
 						window.clearInterval(pay_int);
 						window.location.href = "<{'order/paysuccess?address_id='|url}><{$_order.address_id}>";
 					}
-				}}
+				},'json');
 			},1000);
 		});
 	})(jQuery);

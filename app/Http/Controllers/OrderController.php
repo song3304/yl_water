@@ -110,8 +110,8 @@ class OrderController extends Controller
 	   $pay_order_key = "pay_" .$this->user->getKey().'_'.$address_id;
 	   $order_id = Cache::get($pay_order_key);//分钟数缓存5分钟
 	   $order = Order::find($order_id);
-	   if($order->status>1){
-	       return $this->failure('order.pay_success');
+	   if(isset($order->status)&&$order->status>1){
+	       return $this->success('order.pay_success');
 	   }else{
 	       return $this->failure('order.pay_unknow');
 	   }

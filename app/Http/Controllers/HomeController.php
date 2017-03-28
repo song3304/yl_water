@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Lang;
 //trait
 use Addons\Core\Controllers\ThrottlesLogins;
 
+
+use Cache;
+
 class HomeController extends Controller
 {
     use ThrottlesLogins;
@@ -30,5 +33,11 @@ class HomeController extends Controller
 	    $this->_banners = Banner::where('location',0)->where('status',1)->orderBy('porder','desc')->take(4)->get();
 	    $this->_nav = 'index';//首页
         return $this->view('home.index');		
+	}
+	
+	public function test()
+	{
+	    Cache::put('pay_4_2', 4, 3);//分钟数缓存5分钟
+	    echo  Cache::get('pay_4_2');
 	}
 }

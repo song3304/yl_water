@@ -77,7 +77,8 @@
 			{ 		
 				$.post("<{'ucenter/order_list'|url}>",{page:++current_page},function(data){
 					$('#container').append(data);
-				});
+					bind_click();
+				},'html');
 			}
 		});
 	});

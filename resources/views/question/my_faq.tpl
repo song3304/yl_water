@@ -62,7 +62,7 @@
 			{ 		
 				$.post("<{'question/my_faq'|url}>",{page:++current_page},function(data){
 					$('#container').append(data);
-				});
+				},'html');
 			}
 		});
 	});

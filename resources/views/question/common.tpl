@@ -59,7 +59,7 @@
 			{ 		
 				$.post("<{'question/common'|url}>",{page:++current_page},function(data){
 					$('#container').append(data);
-				});
+				},'html');
 			}
 		});
 	});
