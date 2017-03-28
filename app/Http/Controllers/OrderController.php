@@ -74,7 +74,7 @@ class OrderController extends Controller
 	       $pay = new WechatPayTool($api);
 	       $bizpayurl = new BizPayUrl();
 	       $bizpayurl->setProductId($order->getKey());
-	       $qrcode = $pay->bizpayurl($bizpayurl);
+	       $qrcode = $pay->bizpayurl($bizpayurl);unset($qrcode['sub_mch_id']);
            $this->_qrcode = 'weixin://wxpay/bizpayurl?'.http_build_query($qrcode);
            $this->_pay_info = ['type'=>"weixin",'msg'=>'请使用微信客户端，打开扫一扫,完成支付.'];
 	   }elseif($pay_type == Order::PAY_ALIPAY){
@@ -109,7 +109,7 @@ class OrderController extends Controller
 	            unset($order_data['id']);unset($order_data['out_trade_no']);
 	            unset($order_data['pay_type']);unset($order_data['order_log']);
 	            $order_data['status'] = Order::INIT;
-	            $order = Order::create($order_data);   
+	            $order = Order::create($order_data);  
 	        }else{
 	            $order->update(['status'=>Order::INIT]);
 	        }
@@ -119,7 +119,7 @@ class OrderController extends Controller
 	    $pay = new WechatPayTool($api);
 	    $title = '交水费(地址:'.$order->account_address.')';
 	    $unified_order = (new UnifiedOrder('NATIVE', date('ymdHis').str_pad($order->getKey(), 8, '0', STR_PAD_LEFT), $title, $order->sumMoney*100))
-	    ->SetNotify_url(url('notifyWeixin/'.$order->getKey()));
+	    ->SetNotify_url(url('notifyWeixin/'.$order->getKey()))->setProductId($order_id);
 	    $UnifiedOrderResult = $pay->unifiedOrder($unified_order);
 	    if ( $UnifiedOrderResult['return_code'] != 'SUCCESS' || empty($UnifiedOrderResult['prepay_id']))
 	       return $this->failure(['content' => $UnifiedOrderResult['return_msg']]);

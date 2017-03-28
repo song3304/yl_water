@@ -17,6 +17,9 @@ $router->addAnyActionRoutes([
 	'wechat',
 ]);
 
+$router->any('notifyAlipay/{oid}', 'PayController@notifyAlipay');
+$router->any('notifyWeixin/{oid}', 'PayController@notifyWeixin');
+
 $router->group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['auth', 'role:administrator']], function($router) {
     
 	$router->addAdminRoutes([
