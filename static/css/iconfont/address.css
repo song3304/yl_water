@@ -83,7 +83,7 @@ img{ display:block;}
 .star_box img{ float:left; margin-left:4px; width:16px; height:auto}
 
 /*address地址*/
-.address{ height:118px; padding-left:4%; padding-right:4%; position:relative; margin-top:14px; background-color:#fff; padding-top:9px; box-sizing:border-box}
+.address{ height:118px; padding-left:4%; padding-right:4%; position:relative; margin-top:14px; background-color:#fff; padding-top:4px; box-sizing:border-box}
 .address h1{ font-size:14px; line-height:21px; color:#191919;margin:0;}
 .address h2{ font-size:14px;  color:#65646b;margin:0;}
 .address h3{ font-size:14px; line-height:18px; color:#b2bab8;margin:0;}
