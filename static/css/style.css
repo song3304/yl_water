@@ -749,7 +749,7 @@ body{
 }
 .notice-list h3{font-size: .48rem;}
 .notice-list,.answer-list{
-	width:84%;
+	width:100%;
 	padding: 2% 4%;
 	color: #333;
 }
