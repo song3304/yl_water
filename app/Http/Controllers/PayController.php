@@ -35,7 +35,7 @@ class PayController extends Controller
 	        $trade_status = $request->input('trade_status');
 	        $alipay_log = array_only($request->all(), ['notify_time','notify_type','notify_id','out_trade_no','subject','out_biz_no','trade_no','trade_status','seller_id','seller_email','buyer_id','buyer_logon_id','total_amount','receipt_amount','buyer_pay_amount','body','gmt_create','gmt_payment','point_amount','fund_bill_list','voucher_detail_list']);
 	        //记录日志
-	        AlipayBill::create($alipay_log+['order_id'=>$oid,'train_order_id'=>'0']);
+	        AlipayBill::create($alipay_log+['order_id'=>$oid]);
 	        if($trade_status == 'TRADE_FINISHED') {
 	            $order = Order::findOrFail(intval($oid));
 	            $order->pay($request->input('total_amount'),true,Order::PAY_ALIPAY,$request->input('out_trade_no'));
