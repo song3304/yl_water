@@ -108,10 +108,12 @@ class OrderController extends Controller
 	       $payRequestBuilder->setTotalAmount($total_amount);
 	       $payRequestBuilder->setTimeExpress($timeout_express);
 	       
-	       $payResponse = new AlipayTradeService(config('services.alipay_config'));
+	       $payResponse = new AlipayTradeService(config('services.alipay_sand_box_config'));
 	       $result=$payResponse->wapPay($payRequestBuilder,url('order/paysuccess?order_id=').$order->getKey(),url('pay/notifyAlipay/'.$order->getKey()));
-	       $this->_qrcode = $result;
-           $this->_pay_info = ['type'=>"alipay",'msg'=>'请使用支付宝客户端，打开扫一扫,完成支付.'];
+
+	       return redirect($result);
+	       //$this->_qrcode = $result;
+           //$this->_pay_info = ['type'=>"alipay",'msg'=>'请使用支付宝客户端，打开扫一扫,完成支付.'];
 	   }elseif($pay_type == Order::PAY_RCB){
 	       //农商行 未处理
 	       
