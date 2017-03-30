@@ -93,14 +93,6 @@ class PayController extends Controller
             $order = Order::find($order_id);
             if (empty($order)){
                 return $this->failure_noexists();
-            }else{
-                if($order->status >= Order::PAID){
-                    //重新生成订单
-                    $order_data = ['user_id'=>$order->user_id,'address_id'=>$order->address_id,'sumMoney'=>$order->sumMoney,'status'=>Order::INIT];
-                    $order = Order::create($order_data);
-                }else{
-                    $order->update(['status'=>Order::INIT]);
-                }
             }
     
             $title = '交水费(地址:'.$order->account_address.')';
@@ -113,9 +105,7 @@ class PayController extends Controller
     
             $feedback = new Feedback($api);
             $xml =  $feedback->getPayXML($UnifiedOrderResult);
-            //重置支付标记
-            $pay_order_key = "pay_" . $order->user_id.'_'.$order->address_id;           
-            Cache::put($pay_order_key, $order->id, 3);//分钟数缓存5分钟
+
             echo $xml;exit;
         });
         return $result;

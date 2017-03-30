@@ -8,7 +8,7 @@
 namespace App\Tools\Alipay;
 
 use App\Tools\Alipay\AopClient;
-use App\Tools\Alipay\AlipayTradeAppPayRequest;
+use App\Tools\Alipay\AlipayTradeWapPayRequest;
 
 class AlipayTradeService {
 	//支付宝网关地址
@@ -49,23 +49,6 @@ class AlipayTradeService {
 // 		}
 
 	}
-    //手机端支付
-	function appPay($builder,$notify_url) {
-	
-	    $biz_content=$builder->getBizContent();
-	    //打印业务参数
-	    //$this->writeLog($biz_content);
-	
-	    $request = new AlipayTradeAppPayRequest();
-	
-	    $request->setNotifyUrl($notify_url);
-	    $request->setBizContent ( $biz_content );
-	
-	    // 首先调用支付api
-	    $response = $this->aopclientRequestExecute ($request,true,'AppJson');
-	    // $response = $response->alipay_trade_wap_pay_response;
-	    return $response;
-	}
 	/**
 	 * alipay.trade.wap.pay
 	 * @param $builder 业务参数，使用buildmodel中的对象生成。
@@ -86,12 +69,12 @@ class AlipayTradeService {
 		$request->setBizContent ( $biz_content );
 	
 		// 首先调用支付api
-		$response = $this->aopclientRequestExecute ($request,true);
+		$response = $this->aopclientRequestExecute ($request,true,'GET');
 		// $response = $response->alipay_trade_wap_pay_response;
 		return $response;
 	}
 
-	 function aopclientRequestExecute($request,$ispage=false,$method="post") {
+	 function aopclientRequestExecute($request,$ispage=false,$method="POST") {
 
 		$aop = new AopClient ();
 		$aop->gatewayUrl = $this->gateway_url;

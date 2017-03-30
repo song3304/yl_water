@@ -26,10 +26,10 @@
 	(function($){
 		$().ready(function(){
 			var pay_int=setInterval(function(){
-				$.get('<{'order/listen_order'|url}>',{address_id:'<{$_order.address_id}>'},function(response){
+				$.get('<{'order/listen_order'|url}>',{order_id:'<{$_order.id}>'},function(response){
 					if(response.result == "success"){
 						window.clearInterval(pay_int);
-						window.location.href = "<{'order/paysuccess?address_id='|url}><{$_order.address_id}>";
+						window.location.href = "<{'order/paysuccess?order_id='|url}><{$_order.id}>";
 					}
 				},'json');
 			},1000);
@@ -44,10 +44,10 @@
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	<div class="text-center">
-		<h5 style="margin:10px;"><{$_pay_info['msg']}></h5>
+		<h5 style="margin:10px;"><{$_pay_info.msg}></h5>
 		<div><img src="<{'qr/index?text='|url}><{$_qrcode|urlencode}>" style="max-width:60%;"/></div>
-		<p class="col-xs-12 text-center">(温馨提示:保存以上面二维码,扫描后可直接完成交费)</p>
+		<{if $_pay_info.type == 'weixin'}><p class="col-xs-12 text-center">(温馨提示:保存以上面二维码,扫描后可直接完成交费)</p><{/if}>
 	</div>
-	<div id="msg" class="text-center" style="margin-top:10px;"><a href="<{'home/index'|url}>">取消支付<a> &nbsp;&nbsp; <a href="<{'order/paysuccess?address_id='|url}><{$_order.address_id}>">支付成功</a></div>	
+	<div id="msg" class="text-center" style="margin-top:10px;"><a href="<{'home/index'|url}>">取消支付<a> &nbsp;&nbsp; <a href="<{'order/paysuccess?order_id='|url}><{$_order.id}>">支付成功</a></div>	
 <{include file="home/footer.inc.tpl"}>	
 <{/block}>

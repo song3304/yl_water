@@ -1,4 +1,5 @@
 <?php
+namespace App\Tools\Alipay;
 /* *
  * 功能：支付宝手机网站支付接口(alipay.trade.wap.pay)接口业务参数封装
  * 版本：2.0
@@ -6,9 +7,8 @@
  * 说明：
  * 以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
  */
-namespace App\Tools\Alipay;
 
-class AlipayTradeAppPayContentBuilder
+class AlipayTradeWapPayContentBuilder
 {
 
     // 订单描述，可以对交易或商品进行一个详细地描述，比如填写"购买商品2件共15.00元"
@@ -46,7 +46,12 @@ class AlipayTradeAppPayContentBuilder
 
     public function __construct()
     {
-        $this->bizContentarr['productCode'] = "QUICK_MSECURITY_PAY";
+        $this->bizContentarr['productCode'] = "QUICK_WAP_PAY";
+    }
+
+    public function AlipayTradeWapPayContentBuilder()
+    {
+        $this->__construct();
     }
 
     public function getBody()
