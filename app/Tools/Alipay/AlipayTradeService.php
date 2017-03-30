@@ -24,6 +24,8 @@ class AlipayTradeService {
 	public $token = NULL;	
 	//返回数据格式
 	public $format = "json";
+	//签名方式
+	public $signtype = "RSA";
 
 	function __construct($alipay_config){
 		$this->gateway_url = $alipay_config['gatewayUrl'];
@@ -31,6 +33,7 @@ class AlipayTradeService {
 		$this->private_key = $alipay_config['merchant_private_key'];
 		$this->alipay_public_key = $alipay_config['alipay_public_key'];
 		$this->charset = $alipay_config['charset'];
+		$this->signtype=$alipay_config['sign_type'];
 
 // 		if(empty($this->appid)||trim($this->appid)==""){
 // 			throw new Exception("appid should not be NULL!");
@@ -84,6 +87,7 @@ class AlipayTradeService {
 		$aop->apiVersion ="1.0";
 		$aop->postCharset = $this->charset;
 		$aop->format= $this->format;
+		$aop->signType=$this->signtype;
 		
 		if($method == 'AppJson') return $aop->sdkExecute($request);
 		// 开启页面信息输出

@@ -22,8 +22,8 @@ class PayController extends Controller
     //支付宝支付
 	public function notifyAlipay(Request $request,$oid=null){
 	    $oid = $request->input('oid') ?: $oid;
-
-	    $alipaySevice = new AlipayTradeService(config('site.alipay_config'));
+        
+	    $alipaySevice = new AlipayTradeService(config('services.alipay_sand_box_config'));
 	    $result = $alipaySevice->check($request->all());
 	    if($result) {//验证成功
 	        //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
