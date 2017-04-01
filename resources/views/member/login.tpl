@@ -65,6 +65,12 @@
 	<div style="text-align:center;font-size:15px;">
 		没有用户,<a href="<{'member/register?callback_url='|url}><{urlencode($_callback_url)}>">去注册</a>
 	</div>
+	<div style="text-align:center;font-size:15px;">
+        	合作登录&nbsp;
+        <!--a href="/oauth/alipay/" class="ali-icon link-icon" title="支付宝快捷登录"></a-->
+		<a href="<{'oauth/qq'|url}>" title="QQ快捷登录"><img src="<{'static/img/oauth/qq.gif'|url}>"/></a>
+        <a href="<{'oauth/weixin'|url}>" title="微信快捷登录"><img src="<{'static/img/oauth/wechat.png'|url}>"/></a>
+   </div>
 </form>
 <{include file="home/footer.inc.tpl"}>	
 <{/block}>

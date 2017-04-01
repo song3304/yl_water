@@ -254,6 +254,7 @@ return [
 		'Agent' => Jenssegers\Agent\Facades\Agent::class,
 		'Image' => Intervention\Image\Facades\Image::class,
 		'Elasticsearch' => Addons\Elasticsearch\Facade::class,
+	    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 	],
 
 ];
