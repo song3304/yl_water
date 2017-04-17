@@ -48,7 +48,7 @@ class OauthController extends Controller
             {
                 $user->update([
                     'nickname' => $qq_user->nick_name?:$qq_user->username,
-                    'gender' => 0,
+                    'gender' => 11,
                     'avatar_aid' => $avatar_aid,
                 ]);
                 Cache::put($hashkey, time(), config('cache.ttl'));
@@ -91,7 +91,7 @@ class OauthController extends Controller
             {
                 $user->update([
                     'nickname' => $weixin_user->nick_name?:$weixin_user->username,
-                    'gender' => 0,
+                    'gender' => 11,
                     'avatar_aid' => $avatar_aid,
                 ]);
                 Cache::put($hashkey, time(), config('cache.ttl'));
