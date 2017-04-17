@@ -35,6 +35,7 @@ class OauthController extends Controller
             $user = User::add([
                 'username' => 'qq'.$oauthUser->getId(),
                 'password' => '',
+                'gender' => 11,
             ], 1);
             
             $qq_user = SocialiteUser::create(['plat_id'=>$oauthUser->getId(), 'username'=>$oauthUser->getName()?:'',
@@ -48,7 +49,6 @@ class OauthController extends Controller
             {
                 $user->update([
                     'nickname' => $qq_user->nick_name?:$qq_user->username,
-                    'gender' => 11,
                     'avatar_aid' => $avatar_aid,
                 ]);
                 Cache::put($hashkey, time(), config('cache.ttl'));
@@ -78,6 +78,7 @@ class OauthController extends Controller
             $user = User::add([
                 'username' => 'wx'.$oauthUser->getId(),
                 'password' => '',
+                'gender' => 11,
             ], 1);
             
             $weixin_user = SocialiteUser::create(['plat_id'=>$oauthUser->getId(), 'username'=>$oauthUser->getName()?:'',
@@ -91,7 +92,6 @@ class OauthController extends Controller
             {
                 $user->update([
                     'nickname' => $weixin_user->nick_name?:$weixin_user->username,
-                    'gender' => 11,
                     'avatar_aid' => $avatar_aid,
                 ]);
                 Cache::put($hashkey, time(), config('cache.ttl'));
