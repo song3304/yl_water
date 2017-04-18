@@ -19,7 +19,7 @@ class UcenterController extends Controller
 {
     public function __construct(){
        $this->user = Auth::check() ? Auth::User() : new \App\User;
-       if(empty($this->user->id)) return $this->error('member.not_login',url('member/login'));
+       if(empty($this->user->id)) return $this->error('member.not_login',url('member/login').'?callback_url='.urlencode(url(app('request')->path())));
        $this->_nav = 'ucenter';
     }
 	//个人中心

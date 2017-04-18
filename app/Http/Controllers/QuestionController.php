@@ -70,7 +70,7 @@ class QuestionController extends Controller
 	public function myFaq(Request $request)
 	{
 	    if(empty($this->user->id)){
-	        return $this->error('member.not_login',url('member/login'));
+	        return $this->error('member.not_login',url('member/login').'?callback_url='.urlencode(url(app('request')->path())));
 	    }
 	    
 	    $question = new Question();
