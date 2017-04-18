@@ -16,7 +16,7 @@ class OauthController extends Controller
 {
     public function qq(Request $request){
         $url = $request->get('callback_url')?:url('ucenter');
-        return \Socialite::with('qq')->redirect();
+        return \Socialite::with('qq')->with(['callback_url'=>$url])->redirect();
     }
     
     public function qqCallback(Request $request){
@@ -59,7 +59,8 @@ class OauthController extends Controller
     }
     
     public function weixin(Request $request){
-        return \Socialite::with('weixinweb')->redirect();
+        $url = $request->get('callback_url')?:url('ucenter');
+        return \Socialite::with('weixinweb')->with(['callback_url'=>$url])->redirect();
     }
     
     public function weixinCallback(Request $request){
