@@ -36,7 +36,7 @@ class OauthController extends Controller
                 'username' => 'qq'.$oauthUser->getId(),
                 'password' => '',
                 'gender' => 11,
-            ], 1);
+            ], 'user1');
             
             $qq_user = SocialiteUser::create(['plat_id'=>$oauthUser->getId(), 'username'=>$oauthUser->getName()?:'',
                 'nick_name'=>$oauthUser->getNickname()?:'',  'email'=>$oauthUser->getEmail()?:'',
@@ -80,7 +80,7 @@ class OauthController extends Controller
                 'username' => 'wx'.$oauthUser->getId(),
                 'password' => '',
                 'gender' => 11,
-            ], 1);
+            ], 'user1');
             
             $weixin_user = SocialiteUser::create(['plat_id'=>$oauthUser->getId(), 'username'=>$oauthUser->getName()?:'',
                 'nick_name'=>$oauthUser->getNickname()?:'',  'email'=>$oauthUser->getEmail()?:'',

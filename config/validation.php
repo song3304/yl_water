@@ -171,7 +171,7 @@ return [
                 'rules' => 'required'
             ],
             'type' =>[
-                'name' => '标题',
+                'name' => '类型',
                 'rules' => 'numeric|max:2'
             ]
         ]

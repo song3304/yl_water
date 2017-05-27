@@ -34,7 +34,7 @@
 <div class="column_box" style="margin-top:14px;" onclick="document.location.href='<{'ucenter/add_address'|url}>?callback_url=<{$_callback_url|urlencode}>';">
 	<div class="border_top"></div>
 	<div class="column_img"><img src="<{'static/img/add.png'|url}>"></div>
-    <p>添加新预约人</p>
+    <p>添加新地址</p>
     <div class="next"><img src="<{'static/img/arrow.png'|url}>"></div>
     <div class="border_bottom"></div>
 </div>
