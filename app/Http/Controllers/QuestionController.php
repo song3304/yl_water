@@ -51,6 +51,7 @@ class QuestionController extends Controller
 	    $pagesize = $request->input('pagesize') ?: config('size.models.'.$question->getTable(),config('size.common'));
 	    $this->_question_list = $question::with(['childrens'])->where('pid',0)->orderBy('created_at','desc')->paginate($pagesize);
 	    //我的问题banner
+	    $this->_title = '咨询解答';
 	    $this->_banner = Banner::where('location',5)->where('status',1)->orderBy('porder','desc')->first();
 	    return intval($request->get('page'))>1 ?$this->view('question.my_faq_datatable'):$this->view('question.my_faq');
 	}
@@ -77,6 +78,7 @@ class QuestionController extends Controller
 	    $pagesize = $request->input('pagesize') ?: config('size.models.'.$question->getTable(),config('size.common'));
 	    $this->_question_list = $question::with(['childrens'])->where('user_id',$this->user->id)->where('pid',0)->orderBy('created_at','desc')->paginate($pagesize);
 	    //我的问题banner
+	    $this->_title = '我的问题';
 	    $this->_banner = Banner::where('location',5)->where('status',1)->orderBy('porder','desc')->first();
 	    return intval($request->get('page'))>1 ?$this->view('question.my_faq_datatable'):$this->view('question.my_faq');
 	}
