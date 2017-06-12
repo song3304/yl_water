@@ -50,6 +50,6 @@
 <!--confirm确认添加-->
 	<input type="hidden" name="address_id" value="<{$_user_address.id}>"/>
 	<input type="hidden" name="callback_url" value="<{$_callback_url}>"/>
-	<button class="confirm">确认添加</button>
+	<button class="confirm">确认修改</button>
 </form>	
 <{/block}>
