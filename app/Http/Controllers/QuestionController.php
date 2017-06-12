@@ -64,6 +64,7 @@ class QuestionController extends Controller
 	        return $this->failure_noexists();
 	    //dd($this->_question);
 	    //常见问题banner
+	    $this->_title = '咨询解答';
 	    $this->_banner = Banner::where('location',5)->where('status',1)->orderBy('porder','desc')->first();
 	    return $this->view('question.faq_item');
 	}

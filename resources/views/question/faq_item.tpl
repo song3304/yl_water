@@ -14,7 +14,7 @@
 
 <{block "body-container"}>
 	<div class="header">
-		<span>问题详情</span>
+		<span><{if !empty($_title)}><{$_title}><{else}>问题详情<{/if}></span>
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	<div class="banner">
