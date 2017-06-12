@@ -14,7 +14,7 @@
 
 <{block "body-container"}>
 	<div class="header">
-		<span><{$_title}>/span>
+		<span><{$_title}></span>
 		<a href="javascript:window.history.go(-1);" class="back"><i class="iconfont icon-left"></i></a>
 	</div>
 	<div class="banner">
